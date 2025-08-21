@@ -3,7 +3,7 @@ import { Descendant, BaseEditor, BaseRange } from "slate-vue3/core";
 import { DOMEditor } from "slate-vue3/dom";
 
 export type BlockQuoteElement = {
-  type: "block-quote";
+  type: "blockquote";
   align?: string;
   children: Descendant[];
 };
@@ -38,48 +38,48 @@ export type EditableVoidElement = {
 };
 
 export type HeadingOneElement = {
-  type: "heading-one";
+  type: "h1";
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingTwoElement = {
-  type: "heading-two";
+  type: "h2";
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingThreeElement = {
-  type: "heading-three";
+  type: "h3";
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingFourElement = {
-  type: "heading-four";
+  type: "h4";
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingFiveElement = {
-  type: "heading-five";
+  type: "h5";
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingSixElement = {
-  type: "heading-six";
+  type: "h6";
   align?: string;
   children: Descendant[];
 };
 
 export type ImageElement = {
-  type: "image";
+  type: "img";
   url: string;
   children: EmptyText[];
 };
 
-export type LinkElement = { type: "link"; url: string; children: Descendant[] };
+export type LinkElement = { type: "a"; url: string; children: Descendant[] };
 
 export type ButtonElement = { type: "button"; children: Descendant[] };
 
@@ -89,21 +89,22 @@ export type ListItemElement = { type: "list-item"; children: Descendant[] };
 
 export type MentionElement = {
   type: "mention";
-  character: string;
+  value: string;
   children: CustomText[];
 };
 
 export type ParagraphElement = {
-  type: "paragraph";
+  type: "p";
   align?: string;
   children: Descendant[];
 };
 
 export type TableElement = { type: "table"; children: any[] };
 
-export type TableCellElement = { type: "table-cell"; children: CustomText[] };
+export type TableCellElement = { type: "td"; children: CustomText[] };
 
-export type TableRowElement = { type: "table-row"; children: any[] };
+export type TableRowElement = { type: "tr"; children: any[] };
+export type TableHeadElement = { type: "th"; children: any[] };
 
 export type TitleElement = { type: "title"; children: Descendant[] };
 
@@ -111,6 +112,20 @@ export type VideoElement = {
   type: "video";
   url: string;
   children: EmptyText[];
+};
+
+export type AudioElement = {
+  type: "audio";
+  url: string;
+  children: EmptyText[];
+};
+
+export type FileElement = {
+  children: EmptyText[];
+  isUpload: boolean;
+  name: string;
+  type: "file";
+  url: string;
 };
 
 export type CodeBlockElement = {
@@ -154,11 +169,14 @@ export type CustomElement =
   | TableElement
   | TableRowElement
   | TableCellElement
+  | TableHeadElement
   | TitleElement
   | VideoElement
   | CodeBlockElement
   | CodeElement
-  | CodeLineElement;
+  | CodeLineElement
+  | FileElement
+  | AudioElement;
 
 export type CustomText = {
   bold?: boolean;
