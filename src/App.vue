@@ -64,10 +64,17 @@ const renderElement = ({ element, children, attributes }: RenderElementProps) =>
   console.log(element)
   return h('div', attributes, children); // Default rendering
 };
+
+const renderLeaf = ({ attributes, children, leaf }: any) => {
+  if (leaf.kbd) {
+    return h('kbd', attributes, children);
+  }
+  return h('span', attributes, children);
+};
 </script>
 
 <template>
-  <Slate :editor="editor" :render-element="renderElement">
+  <Slate :editor="editor" :render-element="renderElement" :render-leaf="renderLeaf">
     <Toolbar>
       <ButtonGroup>
         <Undo />
@@ -119,5 +126,15 @@ const renderElement = ({ element, children, attributes }: RenderElementProps) =>
 .editable .audio {
   width: 100%;
   margin-top: 8px;
+}
+
+.editable kbd {
+  padding: 2px 6px;
+  border: 1px solid rgb(228, 228, 231);
+  border-radius: 4px;
+  background-color: rgb(244, 244, 245);
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 20px;
 }
 </style>
