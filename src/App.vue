@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Slate, Editable, type RenderElementProps } from 'slate-vue3';
+import { Slate, Editable, type RenderElementProps, useInheritRef } from 'slate-vue3';
 import { createEditor } from 'slate-vue3/core';
 import { withDOM } from 'slate-vue3/dom';
 import { withHistory } from 'slate-vue3/history';
@@ -11,6 +11,7 @@ import { initialChildren } from './utils/initial-children';
 import { Files } from '@element-plus/icons-vue';
 import { h } from 'vue';
 import { ElIcon } from 'element-plus';
+import Comment from './components/comment/index.vue';
 
 const editor = withHistory(withDOM(createEditor()))
 editor.children = initialChildren as any
@@ -61,13 +62,22 @@ const renderElement = ({ element, children, attributes }: RenderElementProps) =>
     case 'audio':
       return h('audio', { ...attributes, controls: true, src: element.url, class: 'audio' }, children)
   }
-  console.log(element)
   return h('div', attributes, children); // Default rendering
 };
 
-const renderLeaf = ({ attributes, children, leaf }: any) => {
+const renderLeaf = ({ attributes, children, leaf, leafPosition }: any) => {
   if (leaf.kbd) {
     return h('kbd', attributes, children);
+  }
+  if (leaf.suggestion) {
+    const colorMap = {
+      insert: '#a4f4cfcc',
+      remove: '#f4a4a4cc',
+    }
+    return h('span', { ...attributes, style: { backgroundColor: '#a4f4cfcc' } }, children);
+  }
+  if (leaf.comment) {
+    return h(Comment, { ...useInheritRef(attributes), leaf, leafPosition }, () => children)
   }
   return h('span', attributes, children);
 };
@@ -95,6 +105,7 @@ const renderLeaf = ({ attributes, children, leaf }: any) => {
   padding-inline: max(64px, 50% - 350px);
   padding-top: 16px;
   padding-bottom: 20vh;
+  position: relative;
 }
 
 .editable a {
